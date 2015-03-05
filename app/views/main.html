@@ -1,0 +1,22 @@
+  <p class="lead">
+    Press
+    <a class="btn btn-lg btn-success" ng-href="#" ng-click="AddWindow();">
+      <span class="glyphicon glyphicon-plus-sign"></span>
+    </a>
+    to add more chat window.
+  </p>
+
+<div class="row marketing">
+  <div class="row">
+    <div class="col-sm-6" ng-repeat="data in chatWindows" >
+      <iframe
+        height="400"
+        frameBorder="0"
+        id="{{data.id}}"
+        sandbox="allow-scripts"
+        ng-src="{{getIframeSrc(data);}}"
+        scrolling="no" ></iframe>
+    </div>
+  </div>
+</div>
+
