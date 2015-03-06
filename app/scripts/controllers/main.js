@@ -21,7 +21,8 @@ angular.module('iichatApp')
         for (var i = 0; i < $scope.chatWindows.length; i++) {
             iFrameInfo = $scope.chatWindows[i];
             targetFrame = document.getElementById(iFrameInfo.id);
-            targetFrame.contentWindow.postMessage(m.data, '*');
+            MessageService.postMessageToFrame(targetFrame,m.data);
+
         }
       }
     });

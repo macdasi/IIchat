@@ -25,10 +25,12 @@ angular
       }, false);
     };
 
-
+    var postMessageToFrame = function(targetFrame,m){
+      targetFrame.contentWindow.postMessage(m, '*');
+    };
 
     var postMessage = function(m){
       win.parent.postMessage(m, "*");
     };
-    return {postMessage:postMessage,addListener:addListener};
+    return {postMessageToFrame:postMessageToFrame,postMessage:postMessage,addListener:addListener};
   }]);

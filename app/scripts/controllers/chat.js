@@ -22,11 +22,11 @@ angular
 
     MessageService.addListener(
 
-      { name: $scope.name
+      { id: $scope.id ,
+        name: $scope.name
         , message:$scope.name + ' joined the conversation.'   },
 
       function(m){
-      console.log(m.data);
       $scope.messeges[$scope.messeges.length] = m.data;
       $scope.$digest();
       var objDiv = document.getElementById("chatDiv");
