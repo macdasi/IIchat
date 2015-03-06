@@ -1,11 +1,8 @@
 'use strict';
 
 /**
- * @ngdoc function
- * @name iichatApp.controller:MainCtrl
- * @description
- * # MainCtrl
- * Controller of the iichatApp
+ control a single chat box , populate messages and controls send event of a message
+
  */
 
 angular
@@ -23,10 +20,12 @@ angular
       $scope.message = '';
     };
 
-    //notify on login
-    MessageService.postMessage({sender:$scope.id, name: $scope.name, type:1 ,message:$scope.name + ' joined the conversation.'   });
+    MessageService.addListener(
 
-    MessageService.addListener(function(m){
+      { name: $scope.name
+        , message:$scope.name + ' joined the conversation.'   },
+
+      function(m){
       console.log(m.data);
       $scope.messeges[$scope.messeges.length] = m.data;
       $scope.$digest();
