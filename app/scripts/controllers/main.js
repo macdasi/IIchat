@@ -5,24 +5,26 @@
 
  */
 angular.module('iichatApp')
-  .controller('MainCtrl',['$scope','$window', function ($scope,$window) {
+  .controller('MainCtrl',['$scope','MessageService', function ($scope,MessageService) {
     var wIndex = 0;
     $scope.chatWindows = [];
     $scope.AddWindow = function(){
-       var newWindow = {id :'chat_w_'+wIndex , name : 'Iframe '+wIndex};
-      $scope.chatWindows[$scope.chatWindows.length] = newWindow;
+      $scope.chatWindows[$scope.chatWindows.length] =
+      {id :'chat_w_'+wIndex , name : 'Iframe '+wIndex};
       wIndex ++;
     };
 
-    $window.addEventListener('message', function (m) {
+    MessageService.addListener(function(m){
       if(m.data)
       {
-        if(m.data.type) // login notify , notify all but sender
+        var iFrameInfo,targetFrame;
+        if(m.data.type === 1) // login notify , notify all but sender
         {
-          for (var i = 0; i < $scope.chatWindows.length; i++) {
-            var iFrameInfo = $scope.chatWindows[i];
+
+          for (i = 0; i < $scope.chatWindows.length; i++) {
+            iFrameInfo = $scope.chatWindows[i];
             if(iFrameInfo.id != m.data.sender) {
-              var targetFrame = document.getElementById(iFrameInfo.id);
+              targetFrame = document.getElementById(iFrameInfo.id);
               m.data.name = 'System';
               targetFrame.contentWindow.postMessage(m.data, '*');
             }
@@ -31,13 +33,14 @@ angular.module('iichatApp')
         }
         else {  //regular chat message , notify all
           for (var i = 0; i < $scope.chatWindows.length; i++) {
-            var iFrameInfo = $scope.chatWindows[i];
-            var targetFrame = document.getElementById(iFrameInfo.id);
+            iFrameInfo = $scope.chatWindows[i];
+            targetFrame = document.getElementById(iFrameInfo.id);
             targetFrame.contentWindow.postMessage(m.data, '*');
           }
         }
       }
-    }, false);
+
+    });
 
     $scope.getIframeSrc = function (data) {
       return '../chatFrame.html#?name=' + data.name +'&id=' + data.id;
